@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        YouTube Playlist Scheduler
+    </title>
+
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background:#f4f6f8;
+
+            margin:0;
+
+            padding:20px;
+
+        }
+
+
+        .container {
+
+            max-width:1100px;
+
+            margin:auto;
+
+            background:white;
+
+            padding:25px;
+
+            border-radius:10px;
+
+            box-shadow:0 0 10px #ccc;
+
+        }
+
+
+        h1 {
+
+            text-align:center;
+
+            color:#333;
+
+        }
+
+
+        .add-btn {
+
+            display:inline-block;
+
+            background:#28a745;
+
+            color:white;
+
+            padding:12px 20px;
+
+            border-radius:6px;
+
+            text-decoration:none;
+
+            margin-bottom:20px;
+
+        }
+
+
+        table {
+
+            width:100%;
+
+            border-collapse:collapse;
+
+        }
+
+
+        th {
+
+            background:#222;
+
+            color:white;
+
+            padding:12px;
+
+        }
+
+
+        td {
+
+            padding:10px;
+
+            border-bottom:1px solid #ddd;
+
+            text-align:center;
+
+        }
+
+
+        tr:hover {
+
+            background:#f1f1f1;
+
+        }
+
+
+        .btn {
+
+            padding:7px 12px;
+
+            border-radius:5px;
+
+            color:white;
+
+            text-decoration:none;
+
+            margin:2px;
+
+            display:inline-block;
+
+            font-size:14px;
+
+        }
+
+
+        .edit {
+
+            background:#007bff;
+
+        }
+
+
+        .delete {
+
+            background:#dc3545;
+
+        }
+
+
+        .start {
+
+            background:#28a745;
+
+        }
+
+
+        .stop {
+
+            background:#6c757d;
+
+        }
+
+
+        .running {
+
+            color:green;
+
+            font-weight:bold;
+
+        }
+
+
+        .stopped {
+
+            color:red;
+
+            font-weight:bold;
+
+        }
+
+
+    </style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+    نظام تشغيل قوائم يوتيوب تلقائياً
+</h1>
+
+
+
+<a href="/add" class="add-btn">
+
+    + إضافة مهمة جديدة
+
+</a>
+
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+ID
+</th>
+
+
+<th>
+الرابط
+</th>
+
+
+<th>
+وقت البدء
+</th>
+
+
+<th>
+مدة التشغيل
+</th>
+
+
+<th>
+إعادة بعد
+</th>
+
+
+<th>
+الحالة
+</th>
+
+
+<th>
+التحكم
+</th>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+<% if(tasks.length === 0) { %>
+
+
+<tr>
+
+<td colspan="7">
+
+لا توجد مهام حالياً
+
+</td>
+
+</tr>
+
+
+<% } %>
+
+
+
+
+
+<% tasks.forEach(task => { %>
+
+
+<tr>
+
+
+<td>
+
+<%= task.id %>
+
+</td>
+
+
+
+<td>
+
+<a href="<%= task.playlist_url %>" target="_blank">
+
+فتح القائمة
+
+</a>
+
+</td>
+
+
+
+<td>
+
+<%= task.start_time %>
+
+</td>
+
+
+
+<td>
+
+<%= task.duration %>
+
+ ثانية
+
+</td>
+
+
+
+<td>
+
+<%= task.repeat_delay %>
+
+ ثانية
+
+</td>
+
+
+
+
+<td>
+
+
+<% if(task.status === "running") { %>
+
+
+<span class="running">
+
+يعمل
+
+</span>
+
+
+<% } else { %>
+
+
+<span class="stopped">
+
+متوقف
+
+</span>
+
+
+<% } %>
+
+
+</td>
+
+
+
+
+
+<td>
+
+
+<a 
+href="/edit/<%= task.id %>"
+class="btn edit">
+
+تعديل
+
+</a>
+
+
+
+
+<a 
+href="/delete/<%= task.id %>"
+class="btn delete"
+onclick="return confirm('هل تريد الحذف؟');">
+
+حذف
+
+</a>
+
+
+
+
+<a 
+href="/start/<%= task.id %>"
+class="btn start">
+
+تشغيل
+
+</a>
+
+
+
+
+<a 
+href="/stop/<%= task.id %>"
+class="btn stop">
+
+إيقاف
+
+</a>
+
+
+
+</td>
+
+
+
+</tr>
+
+
+
+<% }) %>
+
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+</body>
+
+
+</html>
