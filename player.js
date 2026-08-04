@@ -42,19 +42,23 @@ async function playPlaylist(url, duration) {
         );
 
 
-        browser = await chromium.launch({
+       browser = await chromium.launch({
 
-            headless:true,
+    headless:true,
 
-            args:[
+    args:[
 
-                "--start-maximized",
+        "--no-sandbox",
 
-                "--disable-blink-features=AutomationControlled"
+        "--disable-setuid-sandbox",
 
-            ]
+        "--disable-dev-shm-usage",
 
-        });
+        "--disable-blink-features=AutomationControlled"
+
+    ]
+
+});
 
 
 
