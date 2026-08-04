@@ -1,0 +1,45 @@
+[2026-08-04T12:09:00.019Z] Opening browser
+[2026-08-04T12:09:02.568Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:09:10.512Z] Play command sent
+[2026-08-04T12:09:10.517Z] Playing for 60 seconds
+[2026-08-04T12:10:10.537Z] Closing browser
+[2026-08-04T12:10:11.687Z] Browser closed successfully
+[2026-08-04T12:13:00.030Z] Opening browser
+[2026-08-04T12:13:00.835Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:13:08.850Z] Play command sent
+[2026-08-04T12:13:08.857Z] Playing for 60 seconds
+[2026-08-04T12:14:08.874Z] Closing browser
+[2026-08-04T12:14:10.111Z] Browser closed successfully
+[2026-08-04T12:14:15.128Z] Opening browser
+[2026-08-04T12:14:15.860Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:14:24.686Z] Play command sent
+[2026-08-04T12:14:24.688Z] Playing for 60 seconds
+[2026-08-04T12:14:48.474Z] Playwright Error: page.waitForTimeout: Target page, context or browser has been closed
+[2026-08-04T12:16:00.008Z] Opening browser
+[2026-08-04T12:16:00.739Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:16:10.374Z] Play command sent
+[2026-08-04T12:16:10.375Z] Playing for 60 seconds
+[2026-08-04T12:17:10.388Z] Closing browser
+[2026-08-04T12:17:10.607Z] Browser closed successfully
+[2026-08-04T12:17:15.614Z] Opening browser
+[2026-08-04T12:17:15.868Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:17:23.794Z] Play command sent
+[2026-08-04T12:17:23.796Z] Playing for 60 seconds
+[2026-08-04T12:18:23.802Z] Closing browser
+[2026-08-04T12:18:24.095Z] Browser closed successfully
+[2026-08-04T12:18:29.108Z] Opening browser
+[2026-08-04T12:18:29.494Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:18:39.397Z] Play command sent
+[2026-08-04T12:18:39.404Z] Playing for 60 seconds
+[2026-08-04T12:19:39.424Z] Closing browser
+[2026-08-04T12:19:39.655Z] Browser closed successfully
+[2026-08-04T12:19:44.665Z] Opening browser
+[2026-08-04T12:19:45.037Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:19:54.930Z] Play command sent
+[2026-08-04T12:19:54.937Z] Playing for 60 seconds
+[2026-08-04T12:20:54.961Z] Closing browser
+[2026-08-04T12:20:55.268Z] Browser closed successfully
+[2026-08-04T12:21:00.277Z] Opening browser
+[2026-08-04T12:21:00.705Z] Opening playlist: https://www.youtube.com/watch?v=WZuG5R-a0tg&list=PLJcs4kL5pMKo&index=7
+[2026-08-04T12:21:10.116Z] Play command sent
+[2026-08-04T12:21:10.122Z] Playing for 60 seconds
