@@ -1,45 +1,55 @@
-const sqlite3 = require("sqlite3").verbose();
+require("dotenv").config();
 
-const db = new sqlite3.Database("./database/youtube.db", (err) => {
+const { Pool } = require("pg");
 
-    if (err) {
+const pool = new Pool({
 
-        console.log("Database Error");
+    connectionString: process.env.DATABASE_URL,
 
-        console.log(err);
+    ssl: process.env.NODE_ENV === "production"
+        ? {
+            rejectUnauthorized: false
+        }
+        : false
 
-        return;
+});
+
+async function initDatabase() {
+
+    try {
+
+        await pool.query(`
+
+            CREATE TABLE IF NOT EXISTS tasks (
+
+                id SERIAL PRIMARY KEY,
+
+                playlist_url TEXT NOT NULL,
+
+                start_time VARCHAR(10) NOT NULL,
+
+                duration INTEGER NOT NULL,
+
+                repeat_delay INTEGER NOT NULL,
+
+                status VARCHAR(20) DEFAULT 'running'
+
+            )
+
+        `);
+
+        console.log("PostgreSQL Connected");
 
     }
 
-    console.log("SQLite Connected");
+    catch(err){
 
-});
+        console.log(err);
 
-db.serialize(() => {
+    }
 
-    db.run(`
+}
 
-        CREATE TABLE IF NOT EXISTS tasks (
+initDatabase();
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-            playlist_url TEXT NOT NULL,
-
-            start_time TEXT NOT NULL,
-
-            duration INTEGER NOT NULL,
-
-            repeat_delay INTEGER DEFAULT 5,
-
-            status TEXT DEFAULT 'running',
-
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-
-        )
-
-    `);
-
-});
-
-module.exports = db;
+module.exports = pool;
