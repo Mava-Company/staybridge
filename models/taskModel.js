@@ -1,220 +1,230 @@
 const db = require("../database");
 
-function getAllTasks() {
 
-    return new Promise((resolve, reject) => {
 
-        db.all(
+async function getAllTasks(){
 
-            "SELECT * FROM tasks ORDER BY id DESC",
+    const result = await db.query(
 
-            [],
+        `
 
-            (err, rows) => {
+        SELECT *
 
-                if (err)
-                    return reject(err);
+        FROM tasks
 
-                resolve(rows);
+        ORDER BY id DESC
 
-            }
+        `
 
-        );
+    );
 
-    });
+    return result.rows;
 
 }
 
-function getTask(id) {
 
-    return new Promise((resolve, reject) => {
 
-        db.get(
 
-            "SELECT * FROM tasks WHERE id=?",
 
-            [id],
+async function getTask(id){
 
-            (err, row) => {
+    const result = await db.query(
 
-                if (err)
-                    return reject(err);
+        `
 
-                resolve(row);
+        SELECT *
 
-            }
+        FROM tasks
 
-        );
+        WHERE id=$1
 
-    });
+        `,
 
-}
+        [id]
 
-function createTask(data) {
+    );
 
-    return new Promise((resolve, reject) => {
-
-        db.run(
-
-            `INSERT INTO tasks
-            (
-                playlist_url,
-                start_time,
-                duration,
-                repeat_delay,
-                status
-            )
-            VALUES(?,?,?,?,?)`,
-
-            [
-
-                data.playlist_url,
-
-                data.start_time,
-
-                data.duration,
-
-                data.repeat_delay,
-
-                "running"
-
-            ],
-
-            function(err) {
-
-                if (err)
-                    return reject(err);
-
-                resolve(this.lastID);
-
-            }
-
-        );
-
-    });
+    return result.rows[0];
 
 }
 
-function updateTask(id, data) {
 
-    return new Promise((resolve, reject) => {
 
-        db.run(
 
-            `UPDATE tasks
-             SET
-             playlist_url=?,
-             start_time=?,
-             duration=?,
-             repeat_delay=?,
-             status=?
-             WHERE id=?`,
 
-            [
+async function createTask(data){
 
-                data.playlist_url,
+    await db.query(
 
-                data.start_time,
+        `
 
-                data.duration,
+        INSERT INTO tasks(
 
-                data.repeat_delay,
+            playlist_url,
 
-                data.status,
+            start_time,
 
-                id
+            duration,
 
-            ],
+            repeat_delay,
 
-            function(err){
+            status
 
-                if(err)
-                    return reject(err);
+        )
 
-                resolve(true);
+        VALUES(
 
-            }
+            $1,
 
-        );
+            $2,
 
-    });
+            $3,
 
-}
+            $4,
 
-function deleteTask(id){
+            'running'
 
-    return new Promise((resolve,reject)=>{
+        )
 
-        db.run(
+        `,
 
-            "DELETE FROM tasks WHERE id=?",
+        [
 
-            [id],
+            data.playlist_url,
 
-            function(err){
+            data.start_time,
 
-                if(err)
-                    return reject(err);
+            data.duration,
 
-                resolve(true);
+            data.repeat_delay
 
-            }
+        ]
 
-        );
-
-    });
+    );
 
 }
 
-function startTask(id){
 
-    return new Promise((resolve,reject)=>{
 
-        db.run(
 
-            "UPDATE tasks SET status='running' WHERE id=?",
 
-            [id],
+async function updateTask(id,data){
 
-            function(err){
+    await db.query(
 
-                if(err)
-                    return reject(err);
+        `
 
-                resolve(true);
+        UPDATE tasks
 
-            }
+        SET
 
-        );
+            playlist_url=$1,
 
-    });
+            start_time=$2,
+
+            duration=$3,
+
+            repeat_delay=$4,
+
+            status=$5
+
+        WHERE id=$6
+
+        `,
+
+        [
+
+            data.playlist_url,
+
+            data.start_time,
+
+            data.duration,
+
+            data.repeat_delay,
+
+            data.status,
+
+            id
+
+        ]
+
+    );
+
+}
+
+
+
+
+
+async function deleteTask(id){
+
+    await db.query(
+
+        `
+
+        DELETE FROM tasks
+
+        WHERE id=$1
+
+        `,
+
+        [id]
+
+    );
 
 }
 
-function stopTask(id){
 
-    return new Promise((resolve,reject)=>{
 
-        db.run(
 
-            "UPDATE tasks SET status='stopped' WHERE id=?",
 
-            [id],
+async function startTask(id){
 
-            function(err){
+    await db.query(
 
-                if(err)
-                    return reject(err);
+        `
 
-                resolve(true);
+        UPDATE tasks
 
-            }
+        SET status='running'
 
-        );
+        WHERE id=$1
 
-    });
+        `,
+
+        [id]
+
+    );
 
 }
+
+
+
+
+
+async function stopTask(id){
+
+    await db.query(
+
+        `
+
+        UPDATE tasks
+
+        SET status='stopped'
+
+        WHERE id=$1
+
+        `,
+
+        [id]
+
+    );
+
+}
+
+
+
+
 
 module.exports={
 
