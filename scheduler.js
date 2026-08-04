@@ -10,10 +10,7 @@ function getCurrentTime(){
 
     const now = new Date();
 
-    console.log(
-        "APP TIME:",
-        now.toString()
-    );
+   
 
     return (
         String(now.getHours()).padStart(2,"0")
