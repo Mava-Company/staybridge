@@ -8,8 +8,8 @@ let runningTasks = new Set();
 
 function getCurrentTime() {
 
-     console.log("SERVER TIME:", now.toString());
     const now = new Date();
+     console.log("SERVER TIME:", now.toString());
 
     return (
         String(now.getHours()).padStart(2, "0")
