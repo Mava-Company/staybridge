@@ -8,6 +8,7 @@ let runningTasks = new Set();
 
 function getCurrentTime() {
 
+     console.log("SERVER TIME:", now.toString());
     const now = new Date();
 
     return (
