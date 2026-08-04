@@ -1,22 +1,26 @@
 const cron = require("node-cron");
-
+process.env.TZ = "Europe/Istanbul";
 const db = require("./database");
 
 const playPlaylist = require("./player");
 
 let runningTasks = new Set();
 
-function getCurrentTime() {
+function getCurrentTime(){
 
     const now = new Date();
-     console.log("SERVER TIME:", now.toString());
+
+    console.log(
+        "APP TIME:",
+        now.toString()
+    );
 
     return (
-        String(now.getHours()).padStart(2, "0")
+        String(now.getHours()).padStart(2,"0")
         +
         ":"
         +
-        String(now.getMinutes()).padStart(2, "0")
+        String(now.getMinutes()).padStart(2,"0")
     );
 
 }
