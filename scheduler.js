@@ -4,117 +4,72 @@ const db = require("./database");
 
 const playPlaylist = require("./player");
 
-
 let runningTasks = new Set();
 
-
-
-function getCurrentTime(){
+function getCurrentTime() {
 
     const now = new Date();
 
     return (
-        String(now.getHours()).padStart(2,"0")
+        String(now.getHours()).padStart(2, "0")
         +
         ":"
         +
-        String(now.getMinutes()).padStart(2,"0")
+        String(now.getMinutes()).padStart(2, "0")
     );
 
 }
 
+async function getTask(id) {
 
+    const result = await db.query(
 
-function getTask(id){
+        `
+        SELECT *
+        FROM tasks
+        WHERE id = $1
+        `,
 
-    return new Promise((resolve,reject)=>{
+        [id]
 
-        db.get(
+    );
 
-            "SELECT * FROM tasks WHERE id=?",
+    return result.rows[0];
 
-            [id],
+}
 
-            (err,row)=>{
+function wait(seconds) {
 
-                if(err)
-                    reject(err);
+    return new Promise(resolve => {
 
-                else
-                    resolve(row);
-
-            }
-
-        );
+        setTimeout(resolve, seconds * 1000);
 
     });
 
 }
 
+async function runTaskLoop(task) {
 
-
-
-function wait(seconds){
-
-    return new Promise(resolve=>{
-
-        setTimeout(
-
-            resolve,
-
-            seconds * 1000
-
-        );
-
-    });
-
-}
-
-
-
-
-async function runTaskLoop(task){
-
-
-    if(runningTasks.has(task.id))
+    if (runningTasks.has(task.id))
         return;
-
 
     runningTasks.add(task.id);
 
-
-    console.log(
-        "Started task:",
-        task.id
-    );
-
-
+    console.log("Started task:", task.id);
 
     try {
 
+        while (true) {
 
-        while(true){
+            const currentTask = await getTask(task.id);
 
+            if (!currentTask || currentTask.status !== "running") {
 
-            const currentTask =
-                await getTask(task.id);
-
-
-
-            if(!currentTask ||
-               currentTask.status !== "running"){
-
-
-                console.log(
-                    "Task stopped:",
-                    task.id
-                );
+                console.log("Task stopped:", task.id);
 
                 break;
 
             }
-
-
 
             await playPlaylist(
 
@@ -124,128 +79,86 @@ async function runTaskLoop(task){
 
             );
 
-
-
             console.log(
+
                 "Waiting before restart:",
+
                 currentTask.repeat_delay,
+
                 "seconds"
-            );
-
-
-
-            await wait(
-
-                currentTask.repeat_delay
 
             );
 
+            await wait(currentTask.repeat_delay);
 
         }
 
-
     }
 
-    catch(error){
+    catch (error) {
 
         console.log(error);
 
     }
 
-
-    finally{
+    finally {
 
         runningTasks.delete(task.id);
 
     }
 
+}
+
+async function checkTasks() {
+
+    try {
+
+        const time = getCurrentTime();
+
+        const result = await db.query(
+
+            `
+            SELECT *
+            FROM tasks
+            WHERE status='running'
+            AND start_time=$1
+            `,
+
+            [time]
+
+        );
+
+        const rows = result.rows;
+
+        rows.forEach(task => {
+
+            runTaskLoop(task);
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
 
 }
 
+function start() {
 
+    console.log("Scheduler Started");
 
+    cron.schedule("* * * * *", async () => {
 
+        await checkTasks();
 
-function checkTasks(){
-
-
-    const time =
-        getCurrentTime();
-
-
-
-    db.all(
-
-        `
-        SELECT *
-        FROM tasks
-        WHERE
-        status='running'
-        AND
-        start_time=?
-        `,
-
-        [time],
-
-        (err,rows)=>{
-
-
-            if(err){
-
-                console.log(err);
-
-                return;
-
-            }
-
-
-
-            rows.forEach(task=>{
-
-
-                runTaskLoop(task);
-
-
-            });
-
-
-
-        }
-
-    );
-
+    });
 
 }
 
-
-
-
-function start(){
-
-
-    console.log(
-        "Scheduler Started"
-    );
-
-
-    cron.schedule(
-
-        "* * * * *",
-
-        ()=>{
-
-            checkTasks();
-
-        }
-
-    );
-
-
-}
-
-
-
-module.exports={
+module.exports = {
 
     start
 
