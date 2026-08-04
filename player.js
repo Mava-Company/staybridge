@@ -10,6 +10,7 @@ const logFile = path.join(
 );
 
 
+
 function writeLog(message) {
 
     const time = new Date().toISOString();
@@ -19,12 +20,28 @@ function writeLog(message) {
 
     console.log(message);
 
-    fs.appendFileSync(
-        logFile,
-        text
-    );
+
+    try {
+
+        fs.appendFileSync(
+            logFile,
+            text
+        );
+
+    }
+
+    catch(e){
+
+        console.log(
+            "Log Error:",
+            e.message
+        );
+
+    }
 
 }
+
+
 
 
 
@@ -42,23 +59,24 @@ async function playPlaylist(url, duration) {
         );
 
 
-       browser = await chromium.launch({
 
-    headless:true,
+        browser = await chromium.launch({
 
-    args:[
+            headless:true,
 
-        "--no-sandbox",
+            args:[
 
-        "--disable-setuid-sandbox",
+                "--no-sandbox",
 
-        "--disable-dev-shm-usage",
+                "--disable-setuid-sandbox",
 
-        "--disable-blink-features=AutomationControlled"
+                "--disable-dev-shm-usage",
 
-    ]
+                "--disable-blink-features=AutomationControlled"
 
-});
+            ]
+
+        });
 
 
 
@@ -98,7 +116,9 @@ async function playPlaylist(url, duration) {
 
 
 
-        await page.waitForTimeout(5000);
+        writeLog(
+            "Page loaded"
+        );
 
 
 
@@ -115,7 +135,13 @@ async function playPlaylist(url, duration) {
 
         }
 
-        catch(e){}
+        catch(e){
+
+            writeLog(
+                "Play command failed"
+            );
+
+        }
 
 
 
@@ -129,11 +155,29 @@ async function playPlaylist(url, duration) {
 
 
 
-        await page.waitForTimeout(
+        try {
 
-            duration * 1000
 
-        );
+            await page.waitForTimeout(
+
+                duration * 1000
+
+            );
+
+
+        }
+
+        catch(e){
+
+
+            writeLog(
+
+                "Page closed during playback"
+
+            );
+
+
+        }
 
 
 
@@ -145,7 +189,13 @@ async function playPlaylist(url, duration) {
 
 
 
-        await browser.close();
+        if(browser){
+
+
+            await browser.close();
+
+
+        }
 
 
 
@@ -156,8 +206,12 @@ async function playPlaylist(url, duration) {
         );
 
 
+        return true;
+
+
 
     }
+
 
 
     catch(error){
@@ -191,7 +245,7 @@ async function playPlaylist(url, duration) {
 
 
 
-        throw error;
+        return false;
 
 
     }
