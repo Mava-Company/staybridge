@@ -1,24 +1,25 @@
 {
-  "name": "pleylist",
+  "name": "playlist",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "YouTube Playlist Scheduler",
+  "main": "app.js",
   "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "body-parser": "^2.3.0",
     "dotenv": "^17.4.2",
-    "ejs": "^6.0.1",
+    "ejs": "^3.1.10",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "node-cron": "^4.6.0",
-    "playwright": "^1.62.1",
-    "sqlite3": "^6.0.1",
-    "uuid": "^14.0.1"
+    "node-cron": "^4.2.1",
+    "playwright": "^1.55.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^11.1.0"
   }
 }
